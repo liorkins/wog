@@ -1,3 +1,8 @@
+import currency_roulette_game
+import guess_game
+import memory_game
+
+
 def welcome():
     username = input("please state your name: ")
     print(f"Hi {username} and welcome to the World of Games: The Epic Journey")
@@ -40,11 +45,17 @@ def start_play():
         except ValueError:
             print("Invalid input. Please enter a valid difficulty in range of 1-5.")
 
-    # Return the validated inputs
-    return difficulty_value, game_value
+    print(f"You entered game type: {game_value} and difficulty level: {difficulty_value}.")
+    if game_value == 1:
+        memory_game.play(difficulty_value)
+    elif game_value == 2:
+        guess_game.play(difficulty_value)
+    elif game_value == 3:
+        currency_roulette_game.play(difficulty_value)
+    else:
+        return "Invalid option selected"
 
 
 welcome()
-game_value, diff_value = start_play()
-print(f"You entered game type: {game_value} and difficulty level: {diff_value}.")
+start_play()
 exit(0)
