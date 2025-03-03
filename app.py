@@ -1,6 +1,4 @@
-import currency_roulette_game
-import guess_game
-import memory_game
+from Games import guess_game, currency_roulette_game, memory_game
 
 
 def welcome():
@@ -16,34 +14,25 @@ def start_play():
 
     # Initialize flags for loop control
     is_valid_game = False
-    is_valid_difficulty = False
+    #is_valid_difficulty = False
 
     game_value = None
     difficulty_value = None
 
     # Validate game type input
     while not is_valid_game:
-        try:
-            game = input("Please choose the game type you wish to play (1-3)")
-            game_value = int(game)
-            if 1 <= game_value <= 3:
-                is_valid_game = True
-            else:
-                print("Invalid input. Please enter a number in range of 1-3")
-        except ValueError:
-            print("Invalid input. Please enter a number in range of 1-3")
-
-    # Validate difficulty number input
-    while not is_valid_difficulty:
-        try:
+        game = input("Please choose the game type you wish to play (1-3)")
+        game_value = int(game)
+        if 1 <= game_value <= 3:
+            is_valid_game = True
+            # Now choose difficulty
             diff = input("please choose the game difficulty (1-5)...")
             difficulty_value = int(diff)
-            if 1 <= difficulty_value <= 5:
-                is_valid_difficulty = True
-            else:
-                print("Invalid input. Please enter a valid difficulty in range of 1-5.")
-        except ValueError:
-            print("Invalid input. Please enter a valid difficulty in range of 1-5.")
+            if not (1 <= difficulty_value <= 5):
+                is_valid_game = False
+                print("Invalid input. Please enter a number in range of 1-5, start again")
+        else:
+            print("Invalid input. Please enter a number in range of 1-3")
 
     print(f"You entered game type: {game_value} and difficulty level: {difficulty_value}.")
     if game_value == 1:
@@ -58,4 +47,4 @@ def start_play():
 
 welcome()
 start_play()
-exit(0)
+#exit(0)

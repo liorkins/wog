@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_CREDENTIALS_ID = 'dfad87aff-7878-4556-b84a-b11f0962e879' // Jenkins credential ID for Docker Hub
+        IMAGE_NAME = 'liorhava/wog_liork_image'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build(IMAGE_NAME)
+                }
+            }
+        }
+
+        stage('Login to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: env.DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.image(IMAGE_NAME).push("latest")
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            sh 'docker logout'
+        }
+    }
+}
